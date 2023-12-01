@@ -1,6 +1,8 @@
 package com.example.customview
 
 import android.os.Bundle
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,28 +16,47 @@ import com.example.customview.views.FlowLayout
 import com.example.customview.views.conversation
 
 class MainActivity : ComponentActivity() {
-    private lateinit var flowLayout: FlowLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initDrawableLayout()
+    }
+
+    private fun initDrawableLayout() {
+        setContentView(R.layout.layout_drawable_item)
+        findViewById<TextView>(R.id.tv_content).apply {
+            setOnClickListener {
+                Toast.makeText(context, "点击了content", Toast.LENGTH_SHORT).show()
+            }
+        }
+        findViewById<TextView>(R.id.tv_menu).apply {
+            setOnClickListener {
+                Toast.makeText(context, "点击了menu", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun initFlowLayout() {
         setContentView(R.layout.layout_main)
-        flowLayout = findViewById(R.id.flow_layout)
+        val flowLayout: FlowLayout = findViewById(R.id.flow_layout)
         for (i in 0 until 16) {
             val item = layoutInflater.inflate(R.layout.item_icon_layout, null, false)
             flowLayout.addView(item)
         }
+    }
 
-//        setContent {
-//            CustomViewTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    conversation(msgList = getListData())
-//                }
-//            }
-//        }
+    private fun initComposeLayout() {
+        setContent {
+            CustomViewTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    conversation(msgList = getListData())
+                }
+            }
+        }
     }
 }
 
@@ -51,7 +72,6 @@ fun getListData(): List<Message> {
     }
     return msgList
 }
-
 
 
 //@Preview(showBackground = true)
